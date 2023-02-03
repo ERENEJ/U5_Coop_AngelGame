@@ -302,7 +302,6 @@ void ACharacterBase::StartFire()
 		else
 		{
 
-			
 			UE_LOG(LogTemp, Warning, TEXT("Current usable item is not valid at void ACharacterBase::StartFire()"));
 		}
 		
@@ -360,7 +359,6 @@ void ACharacterBase::ChangeView()
 		bFirstPersonCameraActive = true;
 		bThirdPersonCameraActive = false;
 
-		return;
 	}
 }
 
@@ -431,7 +429,7 @@ void ACharacterBase::Interact()
 	}
 	else// if line trace failed that means controller want to leave seat and return the previous Pawn
 	{
-		// Character should not have previous owner for now
+		// Character should not have previous owner for Project Angel
 	}
 	
 	// There is no else for character base either interact with object or possesing
@@ -491,35 +489,6 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 		}
 	
 	return DamageToApply;
-
-
-	/*
-	if(EnemyChaserActorRef && !EnemyChaserActorRef->KillList.IsEmpty())
-	{
-		EnemyChaserActorRef->KillList.Pop();
-	}
-	*/
-
-	/*
-	if(EnemyChaserActorRef)
-	{
-		AAIControllerBase* AIControllerBase	= Cast<AAIControllerBase>(EnemyChaserActorRef->GetController());
-
-		if (AIControllerBase->GetBlackboardComponent())
-		{
-			AIControllerBase->GetBlackboardComponent()->ClearValue(TEXT("TargetActor"));
-			UE_LOG(LogTemp, Warning, TEXT(" target actor value must be cleared"));
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT(" blackboardd component not worked"));
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT(" enemychaser actor ref is not valid"));
-	}
-	*/
 	
 }
 
@@ -535,34 +504,6 @@ void ACharacterBase::Client_HandleDeathEvents_Implementation()
 
 void ACharacterBase::HandleReviveEvents()
 {
-	/*
-	// from dead to alive COSMETİCS
-	//Revive related logic should be set here
-	Health = 100.f;
-
-	//Complete Revive Logic  needs own method with interaction at component level
-
-	GetCapsuleComponent()->SetCollisionProfileName("Pawn");
-
-	GetMesh()->SetCollisionProfileName("CharacterMesh");
-		
-	GetMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-		
-	GetMesh()->SetHiddenInGame(false);
-		
-	GetCharacterMovement()->Activate();
-
-	if(CurrentWeapon)
-	{
-		
-		GetCurrentWeapon()->SetActorHiddenInGame(false);
-	}
-		
-	EnableInput(GetLocalViewingPlayerController());
-
-	*/
-
-
 	EnableInput(GetLocalViewingPlayerController());
 	GetCharacterMovement()->Activate();
 	Server_SetHealth(100.0f);
@@ -593,34 +534,6 @@ void ACharacterBase::Server_HandleReviveEvents_Implementation()
 //Hidding player mesh and disabling collision of deadbody 
 void ACharacterBase::HandleDeathEvents()
 {
-
-	/*
-	//SetPlayerState to dead this needs to be replicated
-	IsAlive = false;
-
-	//variable for spawning loot items from dead body
-	LastKnownPosition = GetActorLocation();
-
-	//hide mesh
-	GetMesh()->SetHiddenInGame(true);
-
-	//Disable Deadbody collision
-	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-
-	// set mesh capsule collision for dynamic collision IE:Projectile 
-	GetMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-
-	//disable movement
-	GetCharacterMovement()->Deactivate();
-			
-	//  to hide the weapon
-	GetCurrentWeapon()->SetActorHiddenInGame(true);
-				
-	// disables dead player input
-	DisableInput(GetLocalViewingPlayerController());
-
-	*/
-
 	Server_SetHealth(0.f);
 	
 	//disable movement
@@ -629,13 +542,11 @@ void ACharacterBase::HandleDeathEvents()
 	// disables dead player input
 	DisableInput(GetLocalViewingPlayerController());
 	
-	
 	GetMesh()->SetMaterial(0, DeadMaterial);
 
 	Server_SetIsAlive(false);
 
 	ChangeView();
-
 	
 }
 
@@ -652,8 +563,6 @@ void ACharacterBase::Server_SetIsAlive_Implementation(bool In_IsAlive)
 
 void ACharacterBase::Server_AddPitchValue_Implementation(float Rate)
 {
-	//Multi_AddPitchValue(Rate); // causes crash on beginplay
-
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 	if (FirstPersonCameraComponent)
 	{
@@ -663,7 +572,6 @@ void ACharacterBase::Server_AddPitchValue_Implementation(float Rate)
 
 AWeaponBase* ACharacterBase::GetCurrentWeapon() const
 {
-	//CurrentWeapon
 	return CurrentWeapon;
 }
 
@@ -758,7 +666,8 @@ void ACharacterBase::InteractWithActor_Implementation(APawn* InteractionCaller)
 
 void ACharacterBase::PossesByInteraction_Implementation(AController* CallerController)
 {
-	// DO you really need this method?
+	// This method not need for Project Angel
+	// used for pawn possession logic of Project Space Raid
 }
 
 void ACharacterBase::SetPreviousPossessedPawn_Implementation(APawn* PreviousPawnReference)
