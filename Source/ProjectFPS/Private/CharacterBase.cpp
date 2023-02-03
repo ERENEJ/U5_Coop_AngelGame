@@ -570,6 +570,11 @@ void ACharacterBase::HandleReviveEvents()
 	ChangeView();
 }
 
+TSubclassOf<UUserWidget> ACharacterBase::GetPawnWidgetClass()
+{
+	return CharacterHudWidget;
+}
+
 void ACharacterBase::Server_SetHealth_Implementation(float newHealthValue)
 {
 	Health = newHealthValue;

@@ -9,6 +9,7 @@
 #include "Interfaces/InteractionInterface.h"
 #include "Items/UsableItemBase.h"
 #include "MenuSystem/IngameMenu.h"
+#include "Interfaces/PawnWidgetInterface.h"
 #include "AI/AI_EnemyChaserStatueBase.h"
 #include "CharacterBase.generated.h"
 
@@ -23,7 +24,7 @@ class USoundBase;
 class AWeaponBase;
 
 UCLASS()
-class PROJECTFPS_API ACharacterBase : public ACharacter ,  public IInteractionInterface
+class PROJECTFPS_API ACharacterBase : public ACharacter ,  public IInteractionInterface, public IPawnWidgetInterface
 {
 	GENERATED_BODY()
 
@@ -40,7 +41,6 @@ class PROJECTFPS_API ACharacterBase : public ACharacter ,  public IInteractionIn
 	void ChangeToInventoryItem2();
 	
 	AWeaponBase* GetCurrentWeapon() const;
-	void ProjectileAnimSoundOfWeapon();
 	void TeleportThisCharacter(const FVector& Location);
 
 
@@ -234,6 +234,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> CharacterHudWidget;
 
+	//function of IPawnWidgetInterface Returns Char widget to display
+	virtual TSubclassOf<UUserWidget> GetPawnWidgetClass() override;
+	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool IsPossessable();
 
