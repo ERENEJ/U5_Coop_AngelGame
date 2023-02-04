@@ -582,13 +582,13 @@ void ACharacterBase::MoveForward(float Value)
 		if(Value > 0.0f)
 		{
 			//moving forward faster than moving backwards
-			AddMovementInput(GetActorForwardVector(), Value*2);
+			AddMovementInput(GetActorForwardVector(), Value);
 		}
 		else
 		{
 			//moving backwards will be significantly slower that moving forward
 			//TODO change this values 
-			AddMovementInput(GetActorForwardVector(), Value * 2);
+			AddMovementInput(GetActorForwardVector(), Value * 0.3);
 		}
 		
 	}
@@ -600,7 +600,7 @@ void ACharacterBase::MoveRight(float Value)
 	if (Value != 0.0f)
 	{	//TODO change this values 
 		// add movement in that direction
-		AddMovementInput(GetActorRightVector(), Value * 2);
+		AddMovementInput(GetActorRightVector(), Value * 0.3);
 	}
 }
 
