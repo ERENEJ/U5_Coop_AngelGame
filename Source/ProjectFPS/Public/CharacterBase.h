@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Components/InventoryComponent.h"
-#include "Components/ProjectileCreationComponent.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/InteractionInterface.h"
 #include "Items/UsableItemBase.h"
@@ -219,9 +218,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	UProjectileCreationComponent* ProjectileCreationComponent;
-	
+		
 	/** Gun muzzle's offset from the characters location */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
 	FVector GunOffset;
