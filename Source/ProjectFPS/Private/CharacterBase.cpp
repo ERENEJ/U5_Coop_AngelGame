@@ -93,7 +93,7 @@ void ACharacterBase::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ACharacterBase::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ACharacterBase::StopFire);
-	PlayerInputComponent->BindAction("ChangeView", IE_Pressed, this, &ACharacterBase::ChangeView);
+	//PlayerInputComponent->BindAction("ChangeView", IE_Pressed, this, &ACharacterBase::ChangeView);
 
 	// Bind movement events
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACharacterBase::MoveForward);
@@ -582,7 +582,7 @@ void ACharacterBase::MoveForward(float Value)
 		if(Value > 0.0f)
 		{
 			//moving forward faster than moving backwards
-			AddMovementInput(GetActorForwardVector(), Value);
+			AddMovementInput(GetActorForwardVector(), Value*8);
 		}
 		else
 		{
