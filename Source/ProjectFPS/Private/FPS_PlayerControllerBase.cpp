@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "FPS_PlayerControllerBase.h"
 #include "Blueprint/UserWidget.h"
 #include "Interfaces/PawnWidgetInterface.h"
@@ -9,18 +8,6 @@ void AFPS_PlayerControllerBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-// adds default widget to playercontroller at the start of the character
-	/*
-	if (IsLocalController())
-	{
-		HUD = CreateWidget(this, HUDClass);
-    
-		if (HUD != nullptr)
-		{
-			HUD->AddToViewport();
-		}
-	}
-	*/
 }
 
 void AFPS_PlayerControllerBase::OnPossess(APawn* InPawn)
@@ -29,8 +16,8 @@ void AFPS_PlayerControllerBase::OnPossess(APawn* InPawn)
 
 	
 	RemovePreviousWidget();
-	//And add new pawn related widget
 	
+	//And add new pawn related widget
 	IPawnWidgetInterface* PawnWidgetInterface = Cast<IPawnWidgetInterface>(InPawn);
 	
 	if (PawnWidgetInterface)

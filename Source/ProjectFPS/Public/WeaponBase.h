@@ -13,17 +13,12 @@ struct FWeaponData
 {
 	GENERATED_BODY()
 
-	//TODO Derive from base class 
 	UPROPERTY(EditAnywhere, Category=Projectile)
 	TSubclassOf<AProjectileBase> ProjectileClass;
 
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
 	float MagazineCapacity;
 
-	/*Questions:
-	 * should Anims and sound handle differently for better cache hit performance?
-	 * replicating sound is hard old projects you created/spawned Cosmetic actor that holds sound and particles
-	 */
 	UPROPERTY(EditAnywhere, Category=Projectile)
 	UAnimMontage* ReloadAnim;
 	
@@ -118,7 +113,6 @@ public:
 	// Particle used when the projectile impacts against another object and explodes.
 	UPROPERTY(EditAnywhere, Category = "Effects")
 	UParticleSystem* ExplosionEffect;
-
 
 	/** Gun muzzle's offset from the characters location */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)

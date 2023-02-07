@@ -2,7 +2,6 @@
 
 
 #include "WeaponBase.h"
-
 #include "../../../Plugins/Developer/RiderLink/Source/RD/thirdparty/clsocket/src/StatTimer.h"
 #include "GameFramework/DamageType.h"
 #include "Particles/ParticleSystem.h"
@@ -160,12 +159,12 @@ void AWeaponBase::FireBullet()
 			ActorSpawnParams.Owner = GetOwner();
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-			//TODO auto can be replace by weapon config projectile class
+		
 			auto* Projectile = World->SpawnActor<AProjectileBase>(GetWeaponDataStruct().ProjectileClass, CurrentWeaponMuzzleLocation,WeaponDirection, ActorSpawnParams);
 			//Projectile->ProjectileDamage = GetWeaponDataStruct().WeaponDamage;
 		
 			/*
-			 *TODO Hardcoded cheap recoil values needs to be dynamic per weapon
+			 Hardcoded cheap recoil values
 			//AddControllerPitchInput(-0.15f);
 			//AddControllerYawInput(-0.040f);
 			*/
@@ -173,30 +172,9 @@ void AWeaponBase::FireBullet()
 		}
 
 	}
-	
-	/*
-			// try and play the sound if specified
-			if (GetWeaponDataStruct().FireSound != nullptr)
-			{
-			//UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-			}
-
-			// try and play a firing animation if specified
-			if (GetWeaponDataStruct().FireAnimation != nullptr  )
-			{
-			// Get the animation object for the arms mesh
-		
-			UAnimInstance* AnimInstance = GetMesh1P()->GetAnimInstance();
-			if (AnimInstance != nullptr)
-			{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
-			}
-			}
-			*/
 
 }
 
-// --------------------------------------------     HELPER METHODS ---------------------------------------------------
 USkeletalMesh* AWeaponBase::GetSkeletalMeshOfWeapon() 
 {
 	return SkeletalMeshComponent->SkeletalMesh;

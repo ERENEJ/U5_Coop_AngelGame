@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "CharacterBase.h"
 #include "WeaponBase.h"
 #include "AI/AIControllerBase.h"
@@ -114,7 +113,7 @@ void ACharacterBase::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAction("KeyQAction" ,IE_Pressed, this, &ACharacterBase::KeyQAction);
 }
 
-//Escape button func causes crash commented out
+
 void ACharacterBase::Escape()
 {
 
@@ -127,19 +126,14 @@ void ACharacterBase::Escape()
 	*/
 }
 
-
-
-// Called when the game starts or when SPAWNED
-// There must be SCP type check to set the logic according to current SCP or SCP's
 void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
 	//trying to find first valid weapon to attach at hand at the start of the game
-	//decided at runtime because Inventory component might not be initialized by designer
 	if (!(InventoryComponent->WeaponInventoryArray.IsEmpty()))
 	{
-		// todo make it range loop
+		
 		for(int32 WeaponIndex = 0 ; WeaponIndex <= InventoryComponent->WeaponInventoryArray.Num()-1; WeaponIndex++)
 		{
 			if(InventoryComponent->WeaponInventoryArray[WeaponIndex])
@@ -158,9 +152,7 @@ void ACharacterBase::BeginPlay()
 
 void ACharacterBase::Server_AttachInventoryItemToHand_Implementation(int32 WeaponIndex)
 {
-
 	AttachWeaponToHand(WeaponIndex);
-	
 }
 
 void ACharacterBase::MC_AttachInventoryItemToHand_Implementation(int32 WeaponIndex)
@@ -183,7 +175,6 @@ void ACharacterBase::AttachWeaponToHand(int32 WeaponIndex)
 	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	// need to destroy previous weapon for freeing memory
-
 	
 		if (CurrentWeapon)
 		{
@@ -257,9 +248,8 @@ void ACharacterBase::Tick(float DeltaTime)
 
 void ACharacterBase::StartFire()
 {
-	//previous weapon oriented and character oriented shooting
 
-	//without IsValid inconsistently crashes pending kill or non null after fast weapon switch causes crash? 
+	//without IsValid inconsistently crashes pending kill or non null after fast weapon switch causes crash
 	if(IsValid(CurrentWeapon))
 	{
 		CurrentWeapon->bFireButtonPushedDown = true;
@@ -276,16 +266,11 @@ void ACharacterBase::StartFire()
 			{
 				CurrentUsableItem->bIsPlaced = true;
 				CurrentUsableItem->Server_PlaceVoodooDoll(CurrentUsableItem->VoodooSpawnLocation, CurrentUsableItem->VoodooSpawnRotation);
-
-				//not sure if the ownership must be setted at server or here is ok
+				
 				CurrentUsableItem->SetOwner(this);
 				CurrentUsableItem->bSpawnAllowed = false;
 				--VoodooTotemAmount;
-		
-				
-				// after the placement of voodoo doll it should gets the first item
-				//todo create a Fist weapon which you can relay on as default inventory item?
-				// todo make it range loop same code from beginplay
+
 				for(int32 WeaponIndex = 0 ; WeaponIndex <= InventoryComponent->WeaponInventoryArray.Num()-1; WeaponIndex++)
 				{
 					if(InventoryComponent->WeaponInventoryArray[WeaponIndex])
@@ -318,7 +303,7 @@ void ACharacterBase::StopFire()
 	
 }
 
-//changes fps to tps view of character
+//changes fps to tps view of character 
 void ACharacterBase::ChangeView()
 {
 	UE_LOG(LogTemp, Warning, TEXT("changeviewFunction called"));
@@ -406,6 +391,7 @@ void ACharacterBase::Interact()
 		{
 			// Possess process need to set this pawn reference to possessed actor
 			//and set this actor as Previous Pawn
+			//Pawn possession will be useful in the next patches (wanna possess a bird for Player vs Player game mode)
 			APawn* PawnToPossess = Cast<APawn>(HitResult.GetActor());
 			if(PawnToPossess)
 			{
@@ -428,11 +414,9 @@ void ACharacterBase::Interact()
 	}
 	else// if line trace failed that means controller want to leave seat and return the previous Pawn
 	{
-		// Character should not have previous owner for Project Angel
+		// Character should not have previous owner for now
 	}
-	
-	// There is no else for character base either interact with object or possesing
-	// but for SpaceShip you may want to add extra abilities such as leave the steering wheel of the ship/unposses or attach the ship 
+
 
 }
 
@@ -530,7 +514,7 @@ void ACharacterBase::Server_HandleReviveEvents_Implementation()
 	HandleReviveEvents();
 }
 
-//Hidding player mesh and disabling collision of deadbody 
+
 void ACharacterBase::HandleDeathEvents()
 {
 	Server_SetHealth(0.f);
@@ -586,7 +570,6 @@ void ACharacterBase::MoveForward(float Value)
 		else
 		{
 			//moving backwards will be significantly slower that moving forward
-			//TODO change this values 
 			AddMovementInput(GetActorForwardVector(), Value * 0.3);
 		}
 		
@@ -597,7 +580,7 @@ void ACharacterBase::MoveRight(float Value)
 {
 	//reduced moving right and left values as well
 	if (Value != 0.0f)
-	{	//TODO change this values 
+	{	
 		// add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value * 0.3);
 	}
@@ -611,9 +594,6 @@ void ACharacterBase::TurnAtRate(float Rate)
 
 void ACharacterBase::LookUpAtRate(float Rate)
 {
-	// old logic for single player before implementing AddPitchValue
-	//AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
-
 	if(HasAuthority())
 	{
 		//Multi_AddPitchValue(Rate); causes crash on beginplay
@@ -665,8 +645,8 @@ void ACharacterBase::InteractWithActor_Implementation(APawn* InteractionCaller)
 
 void ACharacterBase::PossesByInteraction_Implementation(AController* CallerController)
 {
-	// This method not need for Project Angel
-	// used for pawn possession logic of Project Space Raid
+	// This method will be used for player vs player mod
+
 }
 
 void ACharacterBase::SetPreviousPossessedPawn_Implementation(APawn* PreviousPawnReference)

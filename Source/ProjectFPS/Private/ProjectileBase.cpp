@@ -2,7 +2,6 @@
 
 
 #include "ProjectileBase.h"
-
 #include "Components/HealthComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
@@ -16,8 +15,6 @@ void AProjectileBase::BeginPlay()
 
 	
 }
-
-
 
 AProjectileBase::AProjectileBase() 
 {
@@ -48,9 +45,6 @@ AProjectileBase::AProjectileBase()
 	bReplicates = true;
 
 	CollisionComp->SetCanEverAffectNavigation(false);
-	
-	//CollisionComp->OnComponentBeginOverlap.AddDynamic(this, &AProjectileBase::OnOverlapBegin);
-	
 }
 
 void AProjectileBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

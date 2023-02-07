@@ -149,9 +149,8 @@ public:
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
 	int TotalFoundTargetItemAmount;
 	
-	// uncomment for weapon oriented approach
+	
 	UPROPERTY(Replicated)
-	//UPROPERTY()
 	AWeaponBase* CurrentWeapon;
 
 	UPROPERTY(Replicated)
@@ -168,11 +167,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int GetTotalFoundTargetItemAmount();
 
-	
-	//handling Death Cosmetics such as hiding mesh and weapon of player
 	void HandleDeathEvents();
 	
-	//handling Death Cosmetics such as hiding mesh and weapon of player
 	UFUNCTION(Reliable,Server)
 	void Server_HandleReviveEvents();
 
@@ -184,8 +180,7 @@ public:
 
 	UFUNCTION(Reliable, Client)
 	void Client_HandleDeathEvents();
-	
-	
+		
 	void HandleReviveEvents();
 
 	FVector LastKnownPosition;
@@ -199,16 +194,6 @@ public:
 	
 	UFUNCTION(Reliable,Server)
 	void Server_SetHealth(float newHealthValue);
-
-	/** Returns Mesh1P subobject **/
-	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
-	/** Returns FirstPersonCameraComponent subobject **/
-	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
-
-
-	FORCEINLINE void SetHealth(float NewHealthValue) { Health = NewHealthValue;}
-	FORCEINLINE float GetHealth() const {return Health;}
-
 	
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
@@ -253,7 +238,12 @@ public:
 	/** AnimMontage to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	UAnimMontage* FireAnimation;
+	
+	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
+	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	FORCEINLINE void SetHealth(float NewHealthValue) { Health = NewHealthValue;}
+	FORCEINLINE float GetHealth() const {return Health;}
 
 
 };

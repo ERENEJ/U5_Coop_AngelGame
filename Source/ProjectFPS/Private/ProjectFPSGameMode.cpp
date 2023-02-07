@@ -1,8 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "ProjectFPSGameMode.h"
-
-
 #include "UObject/ConstructorHelpers.h"
 
 AProjectFPSGameMode::AProjectFPSGameMode()

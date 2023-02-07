@@ -3,7 +3,6 @@
 #include "OnlineSessionSettings.h"
 #include "Blueprint/UserWidget.h"
 #include "OnlineSubsystem.h"
-
 #include "MenuSystem/MainMenu.h"
 
 const static FName GSESSION_NAME = TEXT("My session game");
@@ -129,7 +128,7 @@ void UProjectFPSGameInstance::OnCreateSessionComplete(FName SessionName, bool Su
 	
 	if (World)
 	{
-		//TODO this location creates the map change this value when new map is finished
+		
 		World->ServerTravel("/Game/Platforms/Maps/TestMap?listen");
 	}
 }
@@ -237,9 +236,7 @@ void UProjectFPSGameInstance::CreateSession()
 		
 		OnlineSessionSettings.NumPublicConnections = 2;
 		OnlineSessionSettings.bShouldAdvertise = true;
-		//Check implementation search for lobby and internet Session
 		OnlineSessionSettings.bUsesPresence = true;
-		//added for 4.27 engine version from 4.26 project upgrade
 		OnlineSessionSettings.bUseLobbiesIfAvailable = true;
 
 		OnlineSessionSettings.Set(GSERVER_NAME_SETTING_KEY, DesiredServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
