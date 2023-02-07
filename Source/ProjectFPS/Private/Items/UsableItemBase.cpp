@@ -2,7 +2,6 @@
 
 
 #include "Items/UsableItemBase.h"
-
 #include "CharacterBase.h"
 #include "Net/UnrealNetwork.h"
 
@@ -24,23 +23,20 @@ AUsableItemBase::AUsableItemBase()
 void AUsableItemBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	
 
 }
 
 void AUsableItemBase::Server_PlaceVoodooDoll_Implementation(const FVector& Location, const FRotator& Rotation)
 {
 
-
-//Set Spawn Collision Handling Override
-FActorSpawnParameters ActorSpawnParams;
-ActorSpawnParams.Owner = GetOwner();
-ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	//Set Spawn Collision Handling Override
+	FActorSpawnParameters ActorSpawnParams;
+	ActorSpawnParams.Owner = GetOwner();
+	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	ACharacterBase* CharacterBase = Cast<ACharacterBase>(GetOwner());
 	if(CharacterBase)
 	{
-		//AUsableItemBase* SpawnedDoll = GetWorld()->SpawnActor<AUsableItemBase>(InventoryComponent->UsableItemInventoryArray[WeaponIndex-2], SpawnLocation, SpawnRotation, ActorSpawnParams);
 		APlaceableItemBase* SpawnedDoll = GetWorld()->SpawnActor<APlaceableItemBase>(PlaceableItem, Location, Rotation, ActorSpawnParams);
 
 		//Since the item is placed that means we should add that item to SpawnPointStack
@@ -69,30 +65,3 @@ void AUsableItemBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-
-
-/*
-void AUsableItemBase::HandleStartUseItem()
-{
-
-	if(!WeaponCanFireTimerHandle.IsValid())
-	{
-
-		if(GetNetMode() == ENetMode::NM_Client)
-		{
-			//for initial fire
-			Server_StartFireWeapon();
-		
-			TimerDelegate.BindUFunction(this, TEXT("Server_StartFireWeapon"));
-			GetWorldTimerManager().SetTimer(FireRateTimerHandle, TimerDelegate, 0.7f, true);
-		}
-		else
-		{
-			FireBullet();
-			TimerDelegate.BindUFunction(this, "FireBullet");
-			GetWorldTimerManager().SetTimer(FireRateTimerHandle, TimerDelegate, 0.7f, true);
-
-		}
-	}
-}
-*/

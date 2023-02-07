@@ -35,7 +35,8 @@ EBTNodeResult::Type UBTTask_VectoralChase::ExecuteTask(UBehaviorTreeComponent& O
 	FVector NextVectoralDirection = (TargetLocation - OwnerLocation);
 	NextVectoralDirection.Normalize();
 
-
+	//move 5 meter towards the Target location
+	//if you encounter a obstacle and or no navmesh available BP_TaskFindClosestReachableLocation will be fired from the Behaviour Tree
 	FVector Destination = OwnerLocation + NextVectoralDirection*500;
 	Destination.Z = 0;
 

@@ -32,13 +32,13 @@ public:
 	UPROPERTY(Replicated)
 	TArray<ACharacterBase*> CharacterBaseRefArray;
 
-	// these methods were server methods if not works make it server method
 	void GetAllPlayerRefsFromLevel();
 	void StartStoringPlayerLocation();
 	
 	UFUNCTION(BlueprintCallable)
 	void SetInitialValues();
-	
+
+	//This function Does 2 different job currently will be changed with next AI implementation
 	void FollowPlayerandTurnFaceToTarget();
 	void FaceTowardsTargetItem();
 	bool IsThereAEyeContactWithPlayers();

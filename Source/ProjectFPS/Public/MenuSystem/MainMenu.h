@@ -7,6 +7,9 @@
 #include "MenuInterface.h"
 #include "MainMenu.generated.h"
 
+class UButton;
+class UWidgetSwitcher;
+class UEditableTextBox;
 
 USTRUCT()
 struct FServerData
@@ -46,73 +49,72 @@ public:
 	private:
 
 	UPROPERTY(meta = (BindWidget))
-	class UPanelWidget* SessionListScrollBox;
+	UPanelWidget* SessionListScrollBox;
 
 	UPROPERTY(meta = (BindWidget))
-	class UWidget* SessionList;
+	UWidget* SessionList;
 
 	TSubclassOf<UUserWidget> SessionListClass;
 	
 	UPROPERTY(meta = (BindWidget))
-	class UButton* SinglePlayerButton;
+	UButton* SinglePlayerButton;
 	
 	UPROPERTY(meta = (BindWidget))
-	class UButton* MultiplayerButton;
+	UButton* MultiplayerButton;
 	
 	UPROPERTY(meta = (BindWidget))
-	class UButton* HostButton;
+	UButton* HostButton;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* HostMenu_HostButton;
-	
-	/*   text is renamed as join with ip address  button name stayed same   */
-	UPROPERTY(meta = (BindWidget))
-	class UButton* JoinButton;
-
-	UPROPERTY(meta = (BindWidget))
-	class UButton* JoinSessionButton;
+	UButton* HostMenu_HostButton;
 	
 	UPROPERTY(meta = (BindWidget))
-	class UButton* JoinWithSeassionButton;
+	UButton* JoinButton;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* CancelButton;
-	UPROPERTY(meta = (BindWidget))
-	
-	class UButton* MultiplayerMenu_CancelButton;
-
-	UPROPERTY(meta = (BindWidget))
-	class UButton* HostMenu_CancelButton;
-
-	UPROPERTY(meta = (BindWidget))
-	class UButton* CancelSessionMenuButton;
-
-	UPROPERTY(meta = (BindWidget))
-	class UButton* ExitButton;
-
-	UPROPERTY(meta = (BindWidget))
-	class UButton* JoinIPButton;
-
-	UPROPERTY(meta = (BindWidget))
-	class UWidgetSwitcher* MenuSwitcher;
-
-	UPROPERTY(meta = (BindWidget))
-	class UWidget* JoinWithIPMenu;
-
-	UPROPERTY(meta = (BindWidget))
-	class UWidget* MultiplayerMenu;
-
-	UPROPERTY(meta = (BindWidget))
-	class UWidget* HostMenu;
-
-	UPROPERTY(meta = (BindWidget))
-	class UWidget* MainMenu;
-
-	UPROPERTY(meta = (BindWidget))
-	class UEditableTextBox* IPAddressBox;
+	UButton* JoinSessionButton;
 	
 	UPROPERTY(meta = (BindWidget))
-	class UEditableTextBox* HostMenu_HostNameBox;
+	UButton* JoinWithSeassionButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* CancelButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* MultiplayerMenu_CancelButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* HostMenu_CancelButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* CancelSessionMenuButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* ExitButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* JoinIPButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UWidgetSwitcher* MenuSwitcher;
+
+	UPROPERTY(meta = (BindWidget))
+	UWidget* JoinWithIPMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	UWidget* MultiplayerMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	UWidget* HostMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	UWidget* MainMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	UEditableTextBox* IPAddressBox;
+	
+	UPROPERTY(meta = (BindWidget))
+	UEditableTextBox* HostMenu_HostNameBox;
 	
 
 	UFUNCTION()
@@ -132,10 +134,6 @@ public:
 	UFUNCTION()
 	void OpenMultiplayerMenu();
 
-	/*
-	UFUNCTION()
-	void JoinSeassion();
-	*/
 	UFUNCTION()
 	void OpenJoinMenu();
 
@@ -154,7 +152,5 @@ public:
 
 	FString HostName;
 
-	
-	
 	void UpdateChildren();
 };

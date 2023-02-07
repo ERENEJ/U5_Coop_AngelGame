@@ -6,9 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "IngameMenu.generated.h"
 
-/**
- * 
- */
+class UButton;
 UCLASS()
 class PROJECTFPS_API UIngameMenu : public UUserWidget
 {
@@ -21,11 +19,12 @@ class PROJECTFPS_API UIngameMenu : public UUserWidget
 	virtual bool Initialize() override;
 
 	private:
+	
 	UPROPERTY(meta = (BindWidget))
-	class UButton* ReturnMainMenuButton;
+	UButton* ReturnMainMenuButton;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* ContinueButton;
+	UButton* ContinueButton;
 	
 
 	UFUNCTION()

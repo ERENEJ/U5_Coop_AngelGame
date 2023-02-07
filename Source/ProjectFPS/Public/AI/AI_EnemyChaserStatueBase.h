@@ -42,10 +42,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	TArray<ACharacterBase*> CharacterBaseArray;
 
+	UPROPERTY()
+	AAI_FriendlyPointerStatueBase* FriendlyPointerStatueRef;
+
 	
 	TArray<ACharacterBase*> KillListArray;
 
-	UPROPERTY()
-	AAI_FriendlyPointerStatueBase* FriendlyPointerStatueRef;
-	
 };

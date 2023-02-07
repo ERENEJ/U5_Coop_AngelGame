@@ -21,19 +21,16 @@ void AAI_EnemyChaserStatueBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//setting this here because most of the time the initialization not happens due to CDO
+	
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this,&AAI_EnemyChaserStatueBase::OnBoxCollisionBeginOverlap);
 
-	
+	// no need to run this logic at client level 
 	if( GetNetMode() == ENetMode::NM_ListenServer || GetNetMode() == ENetMode::NM_Standalone)
 	{
 		FriendlyPointerStatueRef = Cast<AAI_FriendlyPointerStatueBase>(UGameplayStatics::GetActorOfClass(GetWorld(), AAI_FriendlyPointerStatueBase::StaticClass()));
 		SetActorTickEnabled(true);		
 	}
-	
 
-	
-	//SetActorTickEnabled(true);
 }
 
 void AAI_EnemyChaserStatueBase::Tick(float DeltaSeconds)
@@ -42,7 +39,7 @@ void AAI_EnemyChaserStatueBase::Tick(float DeltaSeconds)
 
 	AAIControllerBase* AIControllerBase	= Cast<AAIControllerBase>(GetController());
 
-	
+	//need to check constantly  
 	if (AIControllerBase && AIControllerBase->GetBlackboardComponent())
 	{
 		
@@ -59,7 +56,7 @@ void AAI_EnemyChaserStatueBase::OnBoxCollisionBeginOverlap(UPrimitiveComponent* 
 		
 	if(CollidedCharacterBase && AIControllerBase && CollidedCharacterBase == AIControllerBase->GetBlackboardComponent()->GetValueAsObject(TEXT("TargetActor")))
 	{
-		//Applying a whole killing damage here
+		//Applying a whole killing damage here (100 max damage)
 		UGameplayStatics::ApplyDamage(CollidedCharacterBase,100, nullptr, this, nullptr);
 		ClearCurrentTargetPlayer(CollidedCharacterBase);
 			
@@ -72,6 +69,7 @@ void AAI_EnemyChaserStatueBase::OnBoxCollisionBeginOverlap(UPrimitiveComponent* 
 
 void AAI_EnemyChaserStatueBase::ActivateEnemyStatue()
 {
+	//if enemyAI is not chasing do not hide friendly angel 
 	if (KillListArray.IsEmpty())
 	{
 		if(FriendlyPointerStatueRef)
@@ -83,6 +81,7 @@ void AAI_EnemyChaserStatueBase::ActivateEnemyStatue()
 		return;
 	}
 
+	//if enemyAI is chasing  hide friendly angel because it is the only way to notify player(currently) 
 	if(FriendlyPointerStatueRef)
 	{
 		FriendlyPointerStatueRef->SetActorHiddenInGame(true);
@@ -94,17 +93,10 @@ void AAI_EnemyChaserStatueBase::ActivateEnemyStatue()
 	
 	if (AIControllerBase)
 	{
-		/*
-		if(TargetCharacter->IsAlive == false)
-		{s
-
-		}
-		*/
-		
 		
 		if (AIControllerBase->GetBlackboardComponent()  &&  !IsValid(AIControllerBase->GetBlackboardComponent()->GetValueAsObject(TEXT("TargetActor"))))
 		{
-			//need to find first element off the array since I am using remove function the indices not 
+			//need to find first element off the array since I am using remove function, previous the indices can be null
 			for (ACharacterBase* TargetChar : KillListArray)
 			{
 				if(TargetChar && TargetChar->IsAlive)
@@ -130,7 +122,6 @@ void AAI_EnemyChaserStatueBase::ClearCurrentTargetPlayer(ACharacterBase* Charact
 	if (AIControllerBase && AIControllerBase->GetBlackboardComponent() )
 	{
 		// need to clear current target value from Array and BB
-		//TODO this logic is not correct 
 		AIControllerBase->GetBlackboardComponent()->ClearValue(TEXT("TargetActor"));
 		KillListArray.Remove(CharacterBase);
 		ActivateEnemyStatue();
@@ -141,10 +132,12 @@ void AAI_EnemyChaserStatueBase::ClearCurrentTargetPlayer(ACharacterBase* Charact
 	}
 }
 
+
 void AAI_EnemyChaserStatueBase::AddTargetPlayerToChaserQueue(ACharacterBase* CharacterBase)
 {
 	if(CharacterBase && CharacterBase->IsAlive)
 	{
+		//if player already added. It will not be added again 
 		KillListArray.AddUnique(CharacterBase);
 		ActivateEnemyStatue();
 	}

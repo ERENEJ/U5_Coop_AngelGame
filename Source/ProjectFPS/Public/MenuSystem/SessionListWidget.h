@@ -6,9 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "SessionListWidget.generated.h"
 
-/**
- * 
- */
+
+class UMainMenu;
+class UTextBlock;
 UCLASS()
 class PROJECTFPS_API USessionListWidget : public UUserWidget
 {
@@ -17,13 +17,13 @@ class PROJECTFPS_API USessionListWidget : public UUserWidget
 	public:
 	
 	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* ServerName;
+	UTextBlock* ServerName;
 	
 	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* HostUser;
+	UTextBlock* HostUser;
 
 	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* PlayerNumber;
+	UTextBlock* PlayerNumber;
 	
 	void Setup(class UMainMenu* Parent, uint32 index);
 
@@ -38,7 +38,7 @@ private:
 	void OnClicked();
 
 	UPROPERTY()
-	class UMainMenu* Parent;
+	UMainMenu* Parent;
 
 	uint32 Index;
 

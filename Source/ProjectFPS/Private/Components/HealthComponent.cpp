@@ -52,7 +52,6 @@ void UHealthComponent::ExecuteDeathEvents()
 	 
 	if(GetWorld() && GetOwner()) //&& ItemToSpawn)
 	{
-
 		//commented out for Angel Game
 		//GetWorld()->SpawnActor<APickableItemBase>(ItemToSpawn, GetOwner()->GetActorLocation(),GetOwner()->GetActorRotation());
 		//Server_SpawnItem();

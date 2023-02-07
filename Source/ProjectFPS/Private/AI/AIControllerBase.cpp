@@ -2,8 +2,6 @@
 
 
 #include "AI/AIControllerBase.h"
-
-#include "BehaviorTree/BehaviorTree.h"
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
@@ -17,16 +15,6 @@ void AAIControllerBase::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 }
 
-bool AAIControllerBase::IsDead() const
-{
-	return false;
-}
-
-
-void AAIControllerBase::OnHearNoise(APawn* PawnInstigator, const FVector& Location, float Volume)
-{
-}
-
 void AAIControllerBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -37,25 +25,4 @@ void AAIControllerBase::BeginPlay()
 		GetBlackboardComponent()->SetValueAsVector(TEXT("StartLocation"), GetPawn()->GetActorLocation());
 	}
 
-	/*
-	if (PawnSensingComp)
-	{
-		//Registering the delegate which will fire when we hear something
-		PawnSensingComp->OnHearNoise.AddDynamic(this, &AAIControllerBase::OnHearNoise);
-	}
-	*/
-}
-
-void AAIControllerBase::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
-{
-	Super::OnMoveCompleted(RequestID, Result);
-}
-void AAIControllerBase::FinishTask(UBTTaskNode Node)
-{
-	//Node.FinishLatentTask(, EBTNodeResult::Succeeded);
-}
-
-FPathFollowingResult AAIControllerBase::GetOnMovementCompletedResult()
-{
-	return MovementResult;
 }

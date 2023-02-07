@@ -18,36 +18,6 @@ public:
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	//TODO need to copy paste the function call structure and modify the whole logic
-	// todo Before doing that need to decide usable items functionality currently only the voodoo spawner doll is designed
-	//todo as a second item can use med kit or bear trap or invisibility item?
-	//todo currently only 1 function will be added till other usable items are decided
-
-	/*
-	void HandleStartFireWeapon();
-	void HandleStopFireWeapon();
-
-	UFUNCTION()
-	void FireBullet();
-	
-	void StopFiringBullet();
-
-	//UFUNCTION(Reliable,Server)
-	//void Server_StartFireWeapon();
-
-	
-	FTimerHandle WeaponCanFireTimerHandle;
-	FTimerHandle FireRateTimerHandle;
-	FTimerDelegate TimerDelegate;
-	bool bWeaponCanFire = true;
-	bool bFireButtonPushedDown = false;
-
-	void EnableWeaponFire();
-	
-	bool bPressedBefore = false;
-
-	*/
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Voodoo Variables")
 	bool bIsPlaced;
 

@@ -19,14 +19,9 @@ bool UIngameMenu::Initialize()
 	return true;
 }
 
-
-
-
 void UIngameMenu::Setup()
 {
 
-	
-	
 	this -> AddToViewport();
 	this->bIsFocusable = true;
 
@@ -57,12 +52,6 @@ void UIngameMenu::ReturnMainMenu()
 		PlayerController -> ClientTravel("/Game/MenuSystem/MainMenu",TRAVEL_Absolute);
 	}
 
-	/* old slow method
-	UPuzzlePlatformsGameInstance* PuzzlePlatformsGameInstance = Cast<UPuzzlePlatformsGameInstance>(GetGameInstance());
-	if (PuzzlePlatformsGameInstance == nullptr) return;
-	PuzzlePlatformsGameInstance->LoadMenu();
-	*/
-
 }
 
 void UIngameMenu::Continue()
@@ -71,9 +60,11 @@ void UIngameMenu::Continue()
 	UWorld* World = GetWorld();
 	if (!ensure(World != nullptr))
 		return;
+	
 	APlayerController* PlayerController = World->GetFirstPlayerController();
 	if (!ensure(PlayerController != nullptr))
 		return;
+
 	FInputModeGameOnly InputMode;
 	PlayerController->SetInputMode(InputMode);
 	PlayerController->bShowMouseCursor = false;

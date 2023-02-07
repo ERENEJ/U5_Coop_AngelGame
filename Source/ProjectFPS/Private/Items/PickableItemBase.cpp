@@ -44,26 +44,12 @@ void APickableItemBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AAct
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
-	
 	ACharacterBase* Character = Cast <ACharacterBase>(OtherActor);
 	if(Character)
 	{
 		Destroy();
 	}
 
-	/*		
-		//Here checks if Character is alive without this functionality dead body capsule consumes pickable item
-		if(Character && Character->GetHealth() > 0 && Character->IsPlayerControlled())
-		{
-			//TODO pickup logic will be here currently effects variable Not inventory component could be changed later
-			Character->SetSCP_TotemAmount(+1);
-			
-			//UE_LOG(LogTemp, Warning, TEXT("component begin overlap2"));
-			
-			Destroy();
-		}
-	*/
-	
 }
 
 

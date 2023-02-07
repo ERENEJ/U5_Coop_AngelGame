@@ -4,7 +4,6 @@
 #include "AI/AI_FriendlyPointerStatueBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "CharacterBase.h"
-#include "ProjectFPSGameMode.h"
 #include "AI/AIControllerBase.h"
 #include "GameFramework/GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
@@ -19,40 +18,14 @@ AAI_FriendlyPointerStatueBase::AAI_FriendlyPointerStatueBase()
 void AAI_FriendlyPointerStatueBase::BeginPlay()
 {
 	Super::BeginPlay();
-
-	/*
-	if( GetNetMode() == ENetMode::NM_ListenServer)
-	{
-
-		//FTimerHandle TempTimerHandle;
-		//GetWorldTimerManager().SetTimer(TempTimerHandle, this, &AAI_FriendlyPointerStatueBase::SetInitialValues, 4.0f, false);
-
-		FTimerHandle TempTimerHandle2;
-		GetWorldTimerManager().SetTimer(TempTimerHandle2, this, &AAI_FriendlyPointerStatueBase::StartStoringPlayerLocation, 3.5f, true);
-		
-		SetActorTickEnabled((true));	
-	}
-
-	if(GetNetMode() == ENetMode::NM_Standalone)
-	{
-		//FTimerHandle TempTimerHandle;
-		//GetWorldTimerManager().SetTimer(TempTimerHandle, this, &AAI_FriendlyPointerStatueBase::SetInitialValues, 4.0f, false);
-
-		FTimerHandle TempTimerHandle2;
-		GetWorldTimerManager().SetTimer(TempTimerHandle2, this, &AAI_FriendlyPointerStatueBase::StartStoringPlayerLocation, 3.5f, true);
-		
-		SetActorTickEnabled((true));	
-	}
-		*/
-	// added a call a gamemode  bp that adds a character to array when it is connected (OnPostLogin)
+	
 	if(GetNetMode() == ENetMode::NM_Standalone || GetNetMode() == ENetMode::NM_ListenServer)
 	{
-		FTimerHandle TempTimerHandle2;
-		GetWorldTimerManager().SetTimer(TempTimerHandle2, this, &AAI_FriendlyPointerStatueBase::StartStoringPlayerLocation, 3.5f, true);
+		FTimerHandle TempTimerHandle;
+		GetWorldTimerManager().SetTimer(TempTimerHandle, this, &AAI_FriendlyPointerStatueBase::StartStoringPlayerLocation, 3.5f, true);
 		
 		SetActorTickEnabled((true));	
 	}
-	
 
 }
 
@@ -69,7 +42,6 @@ void AAI_FriendlyPointerStatueBase::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	UpdateFriendlyAngel();
-	
 	
 }
 
@@ -94,10 +66,9 @@ void AAI_FriendlyPointerStatueBase::StartStoringPlayerLocation()
 	{
 		if(IsValid(CharBasePtr))
 		{
-
+			// if new location is closer further 15 meters update              
 			if( !(CharBasePtr->GetActorLocation().Equals(PreviousPlayerLocation, 1500.f)))
 			{
-
 				PreviousPlayerLocation = CharBasePtr->GetActorLocation();
 			}
 
@@ -135,6 +106,8 @@ void AAI_FriendlyPointerStatueBase::SetInitialValues()
 
 }
 
+//This function Does 2 different job currently will be changed with next AI implementation
+//FaceTowardsTargetItem will changed 
 void AAI_FriendlyPointerStatueBase::FollowPlayerandTurnFaceToTarget()
 {
 	for(ACharacterBase* CharBasePtr : CharacterBaseRefArray)
@@ -155,8 +128,7 @@ void AAI_FriendlyPointerStatueBase::FollowPlayerandTurnFaceToTarget()
 
 			if (bTempEyecontact)
 			{
-				// the eye connection place might be useful at the future
-				
+				// the eye connection place might be useful at the future for cosmetic events
 			}
 			
 			return;
@@ -166,11 +138,11 @@ void AAI_FriendlyPointerStatueBase::FollowPlayerandTurnFaceToTarget()
 
 void AAI_FriendlyPointerStatueBase::FaceTowardsTargetItem()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Face Towords target item start"));
+	
 	if(IsValid(CurrentTargetItem))
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("Current Target Item is Valid"));
-		//FRotator Rotation = (GetActorLocation() - ( CurrentTargetItem->GetActorRotation());
+		//FRotator Rotation = (GetActorLocation() - ( CurrentTargetItem->GetActorRotation()); //alternative
 		SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), CurrentTargetItem->GetActorLocation()));
 	}
 }
@@ -190,30 +162,31 @@ bool AAI_FriendlyPointerStatueBase::IsThereAEyeContactWithPlayers()
 		CharBasePtr->GetActorEyesViewPoint(EyeLocation,notused );
 		GetWorld()->LineTraceSingleByChannel(HitResult,GetActorLocation(),EyeLocation,ECC_Visibility);
 
-		FVector first = (GetActorLocation() - CharBasePtr->GetActorLocation());
-		first.Normalize(0);
+		FVector DirectionVec = (GetActorLocation() - CharBasePtr->GetActorLocation());
+		DirectionVec.Normalize(0);
 		
-		FVector charFW = CharBasePtr->GetActorForwardVector();
-		//this is wrong
-		float AngleToCharacter = UKismetMathLibrary::DegAcos((first - charFW).Size());
+		FVector CharForwardVector = CharBasePtr->GetActorForwardVector();
+		float AngleToCharacter = UKismetMathLibrary::DegAcos((DirectionVec - CharForwardVector).Size());
 
+		float SightAngleCos = 30.0f;
 		ACharacterBase* CharacterBase = Cast<ACharacterBase>(HitResult.GetActor());
 		
-		if(HitResult.bBlockingHit && CharacterBase &&AngleToCharacter > 30)
+		if(HitResult.bBlockingHit && CharacterBase && AngleToCharacter > SightAngleCos)
 		{
-			//there is a sight
+			
 			//UE_LOG(LogTemp, Warning, TEXT("player SEES the chaser AI"));
 			return  true;
 		}
 	
 	}
 
-
 	return false;
 }
 
 void AAI_FriendlyPointerStatueBase::SetBaseDistanceToTargetItem()
 {
+	// base distance is called at tick because when the target object is obtained friendly angel needs to turn next target item
+	//Observer statue/extra new enemy AI implementation will change this logic as well
 	tempDistanceHolder = GetSquaredDistanceTo(UGameplayStatics::GetActorOfClass(GetWorld(), ATargetItemBase::StaticClass()));
 	
 }
@@ -222,7 +195,8 @@ void AAI_FriendlyPointerStatueBase::SelectClosestTargetItem()
 {
 	TArray<AActor*> tempArray;
 
-	// TODO this line gets called at the tick definitely needs to be changed when you decide the the pick up logic  
+	// TODO this line gets called at the tick and definitely needs to be changed with next Observer statue/extra new enemy AI implementation
+	//currently there is not much actor in the level test map (320) and most of the actors are close to each other (in the memory) 
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetItemBase::StaticClass(), tempArray);
 
 	for(AActor* ActorPtr : tempArray)

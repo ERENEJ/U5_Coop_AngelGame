@@ -41,14 +41,7 @@ bool UMainMenu::Initialize()
 
 	if (JoinIPButton == nullptr) return false;
 	JoinIPButton->OnClicked.AddDynamic(this, &UMainMenu::JoinServerWithIPAdress);
-	
-	
 
-	/*
-	if (JoinWithSeassionButton == nullptr) return false;
-	JoinWithSeassionButton->OnClicked.AddDynamic(this, &UMainMenu::UMainMenu::JoinServerWithIndex);
-	*/
-	
 	/* Index meant to be session indexes at join with session menu  */
 	if (JoinSessionButton == nullptr) return false;
 	JoinSessionButton->OnClicked.AddDynamic(this, &UMainMenu::UMainMenu::JoinServerWithIndex);
@@ -83,8 +76,6 @@ void UMainMenu::SetMenuInterface(IMenuInterface* I_MenuInterface)
 	MenuInterface = I_MenuInterface;
 }
 
-
-
 void UMainMenu::Setup()
 {
 	this->AddToViewport();
@@ -109,17 +100,18 @@ void UMainMenu::OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld)
 {
 	Super::OnLevelRemovedFromWorld(InLevel, InWorld);
 	RemoveFromViewport();
+
 	UWorld* World = GetWorld();
 	if (!ensure(World != nullptr))
 		return;
+	
 	APlayerController* PlayerController = World->GetFirstPlayerController();
 	if (!ensure(PlayerController != nullptr))
 		return;
+
 	FInputModeGameOnly InputMode;
 	PlayerController->SetInputMode(InputMode);
 	PlayerController->bShowMouseCursor = false;
-	
-
 	
 }
 
@@ -127,6 +119,7 @@ void UMainMenu::HostServer()
 {
 	if(!ensure(HostMenu!=nullptr)) return;
 	if(!ensure(MenuSwitcher!=nullptr)) return;
+	
 	MenuSwitcher->SetActiveWidget(HostMenu);
 	if(HostMenu_HostNameBox->GetText().ToString().Len()>1)
 	{
@@ -152,22 +145,12 @@ void UMainMenu::SetHostServerVariables()
 
 }
 
-/*
-
-if(!ensure(HostMenu!=nullptr)) return;
-if(!ensure(MenuSwitcher!=nullptr)) return;
-MenuSwitcher->SetActiveWidget(HostMenu);
-
-MenuInterface -> Host(Test);
-
- */
-
 void UMainMenu::SetServerList(TArray<FServerData> ServerNames)
 {
 	UWorld* World = this->GetWorld();
 	if (!ensure(World!=nullptr)) return;
 
-	//removing all old seassions from list @joinwithseasion menu
+	//removing all old seassions from list 
 	SessionListScrollBox->ClearChildren();
 
 	uint32 i = 0;
@@ -246,24 +229,6 @@ void UMainMenu::OpenMultiplayerMenu()
 	if(!ensure(MenuSwitcher!=nullptr)) return;
 	MenuSwitcher->SetActiveWidget(MultiplayerMenu);
 }
-
-/*
-void UMainMenu::JoinSeassion()
-{
-	if (SelectedIndex.IsSet())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Selected index %d"), SelectedIndex.GetValue());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Selected index is not set "));
-		return;
-	}
-
-	MenuInterface -> JoinWithIndex(SelectedIndex.GetValue());
-	
-}
-*/
 
 void UMainMenu::OpenJoinMenu()
 {
